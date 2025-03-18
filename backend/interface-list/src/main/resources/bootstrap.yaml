@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: interfaceApi-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        namespace: dev
+        group: api
+      config:
+        namespace: dev
+        group: api
+        file-extension: yaml
+        refresh-enabled: true
+      username: nacos
+      password: nacos

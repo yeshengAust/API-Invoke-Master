@@ -1,0 +1,48 @@
+#server:
+#  port: 9982
+#  servlet:
+#    context-path: /api
+#spring:
+#  redis:
+#    host: localhost
+#    port: 6379
+#    password: redis
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/api?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.jdbc.Driver
+#  servlet:
+#
+#    multipart:
+#      max-file-size: 2MB
+#      max-request-size: 5MB
+#mybatis-plus:
+##  configuration:
+#    # 日志
+##    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  global-config:
+#    db-config:
+#      logic-delete-field: isDelete
+#      logic-delete-value: 1
+#      logic-not-delete-value: 0
+#      id-type: auto
+#oss:
+#  access-key: YZxoCPdyMfaSI1Cnbw0dKRibKyvKeb5pbqn4swEv
+#  secret-key: SjoXqKqCpsaEJkBYEbFYBSKXvCblsRUbGvuNGYGm
+#  bucket: yes-blog
+#dubbo:
+#  application:
+#    name: PermissionService
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  registry:
+#    id: nacos-registry
+#    address: nacos://localhost:8848
+#    username: nacos
+#    password: nacos
+#
+#logging:
+#  level:
+#    root=DEBUG:

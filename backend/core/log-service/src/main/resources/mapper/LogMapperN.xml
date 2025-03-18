@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yes.log.mapper.LogMapper">
+
+    <select id="pageLogs" resultType="com.yes.log.domain.vo.LogVo">
+        select l.create_time,
+        c.name `creditName`,
+        l.create_time,
+        l.cost,
+        l.use_time,
+        lg.name `group`,
+        ld.request_params,
+        ld.response,
+        iss.name creditSort
+        from log l
+        left join credit c on c.id=l.credit_id
+        left join interface_sort iss on iss.id = c.sort_id
+        left join log_group lg on l.group_id = lg.id
+        left join log_details ld on l.id = ld.log_id
+        <where>
+            <if test="groupId != null">
+                l.group_id = #{groupId}
+            </if>
+            <if test="creditName != null and creditName != ''">
+                AND c.name = #{creditName}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND l.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="userId != null ">
+                AND l.user_id = #{userId}
+            </if>
+        </where>
+        <if test="pageNum != null and pageSize != null">
+            LIMIT #{pageNum}, #{pageSize}
+        </if>
+    </select>
+    <select id="pageLogsAll" resultType="com.yes.log.domain.vo.LogVo">
+        select
+        l.cost,
+        l.use_time,
+        l.invoke_time
+        from log l
+        left join credit c on c.id=l.credit_id
+        <where>
+            <if test="groupId != null">
+                l.group_id = #{groupId}
+            </if>
+            <if test="creditName != null and creditName != ''">
+                AND c.name = #{creditName}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND l.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="userId != null ">
+                AND l.user_id = #{userId}
+            </if>
+        </where>
+
+    </select>
+    <select id="growthNumsToday" resultType="java.lang.Long">
+        select COUNT(id)
+        from log
+        <where>
+            date(create_time) = curdate()
+            <if test="interfaceId!=null">
+                and interface_id = #{interfaceId}
+            </if>
+        </where>
+
+    </select>
+    <select id="growthNumsLastDay" resultType="java.lang.Long">
+        SELECT COUNT(id)
+        FROM log
+        WHERE date(create_time) >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+        AND date(create_time) &lt; CURDATE();
+    </select>
+    <select id="growthNumsLastByInterfaceId" resultType="java.lang.Long">
+        SELECT COUNT(id)
+        FROM log
+        WHERE date(create_time) >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+          AND date(create_time) &lt; CURDATE()
+          AND interface_id = #{interfaceId}
+    </select>
+
+    <select id="getSevenData" resultType="com.yes.log.domain.entity.DayData">
+        SELECT DATE(create_time) as days,COUNT(id) as data
+        FROM log
+        WHERE date(create_time) >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+        GROUP BY DATE(create_time)
+        </select>
+    <select id="growthNumsTodayByInterfaceId" resultType="java.lang.Long">
+        select COUNT(id)
+        from log
+        where date(create_time) = curdate() and interface_id = #{interfaceId}
+
+    </select>
+    <select id="getAllSortValue" resultType="com.yes.log.domain.entity.AllSortValue">
+        select ist.description as name,sum(ui.invoke_count) as value
+        from user_interface ui
+                 left join interface_info inf on inf.id=ui.interface_id
+                 left join interface_sort ist on ist.id = inf.sort_id
+        group by ist.id
+
+    </select>
+
+</mapper>

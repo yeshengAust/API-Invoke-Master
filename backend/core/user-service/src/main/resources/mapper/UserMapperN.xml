@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yes.user.mapper.UserMapperN">
+    <insert id="saveCredit" parameterType="com.yes.user.domain.entity.Credit" useGeneratedKeys="true" keyProperty="id">
+        insert into credit(secret_key,expire_time,name,quota,sort_id,remain,user_id)
+        values (#{secretKey},#{expireTime},#{name},#{quota},#{sortId},#{quota},#{userId})
+    </insert>
+
+    <update id="forbid">
+        update credit c
+        set c.status = #{status}
+        where c.id = #{id}
+
+    </update>
+    <update id="charge">
+        update user
+        set wallet = wallet + #{amount}
+        where id = #{userId}
+    </update>
+    <select id="pageListCredit" resultType="com.yes.user.domain.vo.CreditVo">
+        select c.id, u.access_key,c.name,c.status,c.remain,c.quota,c.create_time,c.expire_time,c.secret_key,iss.description
+
+        from credit c
+        left join user u on u.id = c.user_id
+        left join interface_sort iss on c.sort_id = iss.id
+
+
+        <where>
+            <if test="userId != null ">
+                and u.id = #{userId}
+            </if>
+
+            <if test="name != null and name != '' ">
+                AND
+                c.name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="secretKey != null and secretKey != '' ">
+                AND
+                c.secretKey like CONCAT('%',#{secretKey},'%')
+            </if>
+        </where>
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="getTotalUserCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM credit c
+        where c.user_id = #{userId}
+    </select>
+    <update id="charRemainQuota">
+        update credit
+        set remain = remain + #{quota}
+        where id = #{creditId}
+    </update>
+    <insert id="saveUserRoleInfo">
+        insert into  user_role (user_id, role_id)
+        values (#{userId},#{roleId})
+    </insert>
+    <update id="updateUserAllQuota">
+        update user
+        set all_quota = all_quota + #{cost}
+        where id = #{userId}
+    </update>
+    <update id="updateUserAllWallet">
+        update user
+        set all_wallet = user.all_wallet + #{cost}
+        where id = #{userId}
+    </update>
+    <update id="updateUserAvatar">
+        update  user
+        set avatar = #{avatar}
+        where id = #{userId}
+        </update>
+
+</mapper>
