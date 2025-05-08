@@ -1,0 +1,76 @@
+#server:
+#  port: 9981
+#  servlet:
+#    context-path: /api
+#
+#
+#spring:
+#  redis:
+#    host: 154.219.98.162
+#    port: 6379
+#    password: redis
+#  #rabbitmq
+#  rabbitmq:
+#    host: 154.219.98.162
+#    port: 5672
+#    username: guest
+#    password: guest
+#    listener:
+#      simple:
+#        acknowledge-mode: auto # 自动ack
+#        retry:
+#          enabled: true # 开启消费者失败重试
+#          initial-interval: 1000ms # 初识的失败等待时长为1秒
+#          multiplier: 1 # 失败的等待时长倍数，下次等待时长 = multiplier * last-interval
+#          max-attempts: 3 # 最大重试次数
+#          stateless: false # true无状态；false有状态。如果业务中包含事务，这里改为false
+#    publisher-confirm-type: CORRELATED # 交换机的确认
+#    publisher-returns: true # 队列的确认
+#
+#
+#
+#  datasource:
+#    url: jdbc:mysql://115.175.74.221:3306/api?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.jdbc.Driver
+#  servlet:
+#    multipart:
+#      max-file-size: 10MB
+#      max-request-size: 10MB
+#      enabled: true
+#mybatis-plus:
+#  configuration:
+#    # 日志
+##    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    map-underscore-to-camel-case: true
+#  global-config:
+#    db-config:
+#      logic-delete-field: isDelete
+#      logic-delete-value: 1
+#      logic-not-delete-value: 0
+#      id-type: auto
+#oss:
+#  access-key: YZxoCPdyMfaSI1Cnbw0dKRibKyvKeb5pbqn4swEv
+#  secret-key: SjoXqKqCpsaEJkBYEbFYBSKXvCblsRUbGvuNGYGm
+#  bucket: yes-api-fast
+#
+#dubbo:
+#  application:
+#    name: userService
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  provider:
+#    group: api
+#  consumer:
+#    group: api
+#  registry:
+#    group: api
+#    id: nacos-registry
+#    address: nacos://115.175.74.221:8848
+#    username: nacos
+#    password: nacos
+#    parameters:
+#     namespace: dev
+#

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- @author <a href="https://github.com/liyupi">程序员鱼皮</a> -->
+<!-- @from <a href="https://yupi.icu">编程导航知识星球</a> -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yes.interfaces.mapper.InterfaceInfoMapper">
+    <insert id="saveInterfaceInvokeLog" useGeneratedKeys="true" keyProperty="id">
+        insert into log (create_time, credit_id, group_id, use_time,invoke_time, cost, user_id,interface_id)
+        values (#{createTime}, #{creditId}, #{groupId}, #{useTime},#{invokeTime}, #{cost}, #{userId},#{interfaceId})
+    </insert>
+    <insert id="saveUserInterfaceInvokeCount" >
+        insert into user_interface (user_id, interface_id, invoke_count)
+        values (#{userId},#{interfaceId},1)
+    </insert>
+    <update id="updateCreditRemain">
+        update credit
+        set remain = remain - #{cost}
+        where id = #{creditId}
+    </update>
+    <update id="saveInterfaceInvokeDetailsLog">
+        insert into log_details( log_id,request_params, response)
+        values (#{logId},#{requestParams},#{response})
+    </update>
+    <update id="updateUserInterfaceInvokeCount">
+        update user_interface ui
+        set ui.invoke_count = ui.invoke_count+1
+        where ui.user_id=#{userId} and ui.interface_id = #{interfaceId}
+    </update>
+    <update id="updateInvokeCountBatch">
+        <foreach collection="invokeCountMap" item="value" index="key">
+        UPDATE interface_info
+        SET invoke_count = #{value}
+        WHERE id = #{key};
+    </foreach>
+    </update>
+
+
+    <select id="getInterfaceCost" resultType="java.lang.Long">
+        select cost
+        from interface_info
+        where   id= #{interfaceId}
+    </select>
+    <select id="getUserCreditInfo" resultType="com.yes.common.domain.entity.UserCreditInfo">
+        select c.id creditId, c.sort_id,c.remain, u.id userId,c.access_key accessKey,c.secret_key secretKey
+        from credit c
+                 left join user u on c.user_id = u.id
+        where c.access_key = #{accessKey}
+
+    </select>
+    <select id="getUserInterfaceCount" resultType="java.lang.Long">
+        select count(*)
+        from user_interface
+        where user_id=#{userId} and interface_id=#{interfaceId}
+    </select>
+    <select id="allInvokeCount" resultType="java.lang.Long">
+        select sum(invoke_count)
+        from user_interface
+    </select>
+    <select id="allInterfaceCount" resultType="java.lang.Long">
+        select COUNT(*)
+        from interface_info
+        where is_delete = 0
+    </select>
+    <select id="getHotInterfaces" resultType="java.lang.Long">
+        select inf.id
+        from user_interface ui
+        left join interface_info inf on inf.id=ui.interface_id
+        group by ui.interface_id
+        limit 0,3
+    </select>
+    <select id="getInterfaceExample" resultType="com.yes.interfaces.domain.vo.InterfaceExampleVo">
+        select pom,example
+        from interface_info
+        where id = #{interfaceId}
+    </select>
+    <select id="getAllInterfaceInvokeCount" resultType="java.util.Map">
+        select id,invoke_count
+        from interface_info
+    </select>
+
+
+</mapper>

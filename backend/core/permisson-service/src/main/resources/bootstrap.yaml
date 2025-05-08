@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: permission-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 115.175.74.221:8848
+        namespace: dev
+        group: api
+      config:
+        server-addr: 115.175.74.221:8848
+        namespace: dev
+        group: api
+        file-extension: yaml
+        refresh-enabled: true
+      username: nacos
+      password: nacos
+dubbo:
+  application:
+    name: PermissionService
+  protocol:
+    name: dubbo
+    port: -1
+  provider:
+    group: api
+  consumer:
+    group: api
+  registry:
+    id: nacos-registry
+    address: nacos://115.175.74.221:8848
+    username: nacos
+    password: nacos
+    parameters:
+      namespace: dev

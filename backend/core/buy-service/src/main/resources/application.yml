@@ -1,0 +1,93 @@
+## 公共配置文件
+## @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+## @from <a href="https://yupi.icu">编程导航知识星球</a>
+#server:
+#  port: 9988
+#  servlet:
+#    context-path: /api
+#spring:
+#  profiles:
+#    active: dev
+#  rabbitmq:
+#    host: 154.219.98.162
+#    port: 5672
+#    username: guest
+#    password: guest
+#    listener:
+#      simple:
+#        acknowledge-mode: auto # 自动ack
+#        retry:
+#          enabled: true # 开启消费者失败重试
+#          initial-interval: 1000ms # 初识的失败等待时长为1秒
+#          multiplier: 1 # 失败的等待时长倍数，下次等待时长 = multiplier * last-interval
+#          max-attempts: 3 # 最大重试次数
+#          stateless: false # true无状态；false有状态。如果业务中包含事务，这里改为false
+#    publisher-confirm-type: CORRELATED # 交换机的确认
+#    publisher-returns: true # 队列的确认
+#  datasource:
+#    url: jdbc:mysql://115.175.74.221:3306/api?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.jdbc.Driver
+#
+#dubbo:
+#  application:
+#    name: buyService
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  registry:
+#    id: nacos-registry
+#    address: nacos://115.175.74.221:8848
+#    username: nacos
+#    password: nacos
+##        - id: permission-service
+##          uri: http://localhost:9982
+##          predicates:
+##            - Path=/api/permission/**
+##        - id: interface-service
+##          uri: http://localhost:9983
+##          predicates:
+##            - Path=/api/interface/**
+##        - id: add_request_header_route
+##          uri: http://localhost:8123
+##          predicates:
+##            - Path=/api/**
+##          filters:
+##            - AddRequestHeader=yupi, swag
+##            - AddRequestParameter=name, dog
+##            - name: CircuitBreaker
+##              args:
+##                name: myCircuitBreaker
+##                fallbackUri: forward:/fallback
+##        - id: yupi-fallback
+##          uri: https://yupi.icu
+##          predicates:
+##            - Path=/fallback
+##logging:
+##  level:
+##    org:
+##      springframework:
+##        cloud:
+##          gateway: trace
+#
+## 原创_项目 [鱼皮](https://space.bilibili.com/12890453/)
+##
+##dubbo:
+##  application:
+##    name: dubbo-service-consumer-gateway
+##  protocol:
+##    name: dubbo
+##    port: -1
+##  registry:
+##    id: nacos-registry
+##    address: nacos://localhost:8848
+#
+#store:
+#  mode: db
+#  db:
+#    dbType: mysql
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://115.175.74.221:3306/seata?useUnicode=true&characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
+#    user: root
+#    password: xiaolvdada6

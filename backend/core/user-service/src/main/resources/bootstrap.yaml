@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: user-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 115.175.74.221:8848
+        namespace: dev
+        group: api
+      config:
+        server-addr: 115.175.74.221:8848
+        namespace: dev
+        group: api
+        file-extension: yaml
+        refresh-enabled: true
+      username: nacos
+      password: nacos
+dubbo:
+  application:
+    name: userService
+  protocol:
+    name: dubbo
+    port: -1
+  provider:
+    group: api
+  consumer:
+    group: api
+  registry:
+    id: nacos-registry
+    address: nacos://115.175.74.221:8848
+    username: nacos
+    password: nacos
+    parameters:
+      namespace: dev
+#seata:
+#  # 默认为true
+#  enabled: true
+#  # 开启数据源自动代理 默认为true
+#  enable-auto-data-source-proxy: true
+#  # 事务模式 默认AT
+#  data-source-proxy-mode: AT
+#  # 事务分组配置（在v1.5之后默认值为default_tx_group）
+#  tx-service-group: my_at_group
+#  service:
+#    # 指定事务分组至集群映射关系（右侧的集群名需要与Seata-server注册到Nacos的cluster保持一致）
+#    vgroup-mapping:
+#      my_at_group: default
+#  config:
+#    type: nacos
+#    nacos:
+#      server-addr: 115.175.74.221:8848
+#  registry:
+#    type: nacos
+#    nacos:
+#      server-addr: 115.175.74.221:8848
+#      application: seata-server
+#      group: api
+#      namespace: dev
+#      username: nacos
+#      password: nacos
+
